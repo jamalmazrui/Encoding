@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Encoding</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="generator" content="pandoc" />
+</head>
+<body>
+<h1 class="title">Encoding</h1>
+<h1 id="version-1.2"
+>Version 1.2</h1
+><h1 id="october-12-2015"
+>October 12, 2015</h1
+><p
+>Copyright 2010 - 2015 by Jamal Mazrui<br
+   />GNU Lesser General Public License (LGPL)<br
+   />---------- # Contents</p
+><ul
+><li
+  ><a href="#A1"
+    >Description</a
+    ></li
+  ><li
+  ><a href="#A2"
+    >Installation</a
+    ></li
+  ><li
+  ><a href="#A3"
+    >Operation</a
+    ></li
+  ><li
+  ><a href="#A4"
+    >Development Notes</a
+    ></li
+  ></ul
+><h1 id="description"
+>Description</h1
+><p
+>Encoding is a free, open source, command-line utility for performing encoding-related operations on files. It can show the encoding of files, and convert between different encodings. Batch operations are supported if wildcard characters are used in the file specification. The executable, Encoding.exe, should run on any version of Windows. The source code, Encoding.py, should run on other platforms as well.</p
+><p
+>An encoding is an agreement about how to represent textual characters with computer bytes. Characters are encoded as byte sequences that may be stored in disk files or computer memory. A byte stream is decoded to produce characters in a human language. If a text file is not readable, the reason may be that it has an encoding that was either not recognized or not decoded properly. This utility may help with such issues, benefiting software developers or end users. It works with over a hundred character encodings.</p
+><h1 id="installation"
+>Installation</h1
+><p
+>Unarchive Encoding.zip into a directory, e.g., into<br
+   />C:\Encoding</p
+><p
+>Run Encoding.exe at a command prompt, e.g., one created by entering<br
+   />cmd.exe</p
+><p
+>at the Windows Start/Run prompt.</p
+><p
+>Since Encoding is developed in a cross-platform language, Python, it should also be possible to run the source code, Encoding.py, on other platforms that have a Python interpreter.</p
+><h1 id="operation"
+>Operation</h1
+><p
+>The complete command-line syntax of Encoding is as follows:</p
+><p
+>Encoding.exe TaskName FileSpec SourceEncoding TargetEncoding</p
+><p
+>Some parameters are optional or not applicable depending on the name of the task. Typing the .exe extension is optional. Capitalization does not matter in task or encoding names . The following tasks are supported, illustrated with example parameter values:</p
+><p
+>encoding help</p
+><p
+>provides a help summary. The help parameter is assumed if no other valid task name is entered.</p
+><p
+>encoding default</p
+><p
+>provides the default language and encoding of the computer, e.g.,<br
+   />en-us cp1252</p
+><p
+>which means U.S. English using code page 1252.</p
+><p
+>The word 'default' may be used as an easier way of specifying the default source or target encoding in other commands.</p
+><p
+>encoding list</p
+><p
+>provides a list of available encodings -- about 95 in all.</p
+><p
+>encoding show *.txt</p
+><p
+>provides the encoding of all files meeting the *.txt specification. If a file has a Unicode byte order mark (BOM), the encoding can be exactly determined. Otherwise, the encoding is huristically detected by analyzing various factors. This is the same algorithm used by the Mozilla Firefox web browser to detect the encoding of text. It is usually correct, but not always.</p
+><p
+>encoding convert *.txt utf-8b</p
+><p
+>converts all *.txt files to UTF-8 encoding with a BOM. Use utf-8n to get utf-8 without a BOM, which is the norm on Linux and the Mac. For ease of typing, the dash character (-) is optional, so utf8b or utf8n may be used instead. Note that these are not official encoding names, but conventions to help clarify whether utf-8 is being encoded with or without a BOM. Some Windows programs prefer one, while others do not.</p
+><p
+>encoding convert *.txt utf8n utf8b</p
+><p
+>converts *.txt files to UTF8 with a BOM. In this case, both a source and target encoding are specified. Rather than detecting the source encoding, it is treated as UTF-8 without a BOM.</p
+><p
+>encoding convert *.txt asciify</p
+><p
+>converts *.txt files to ASCII, keeping only characters with ordinal values less than 128, which may be represented with 7 rather than 8 bits. 'asciify' is an unofficial encoding that is similar to the 'ascii' encoding, except that if a character with a value above the ASCII range has an equivalent character or word meaning in that range, it will be substituted. See the example of the ellipses character below.</p
+><p
+>If the word 'backup' rather than 'convert' is used for the task, the original files will be backed up with the same names except for the addition of a .bak extension.</p
+><p
+>encoding url http://python.org</p
+><p
+>provides encoding information about the web page at that address. Encoding references are sought in the server response headers and meta data of the page. A conflict between encoding references is reported.</p
+><p
+>encoding bytes *.txt</p
+><p
+>provides a list of numeric byte values, one per line, for all files matching the pattern. The first line is the file name. This is probably most useful when analyzing a single source file, and when redirecting standard output to another file that may be examined in an editor, e.g.,<br
+   />encoding bytes test.txt &gt;temp.txt</p
+><p
+>encoding chars temp.txt &gt;test.txt</p
+><p
+>provides output in a similar form except that each line shows information about a character rather than a byte (Unicode can represent a character with multiple bytes). Each line has the Unicode name of the character, its numeric code point, and an ASCII equivalent of the character if available and different from the original character. For example, the ellipses symbol has the code point U2026, and an ASCII equivalent of three consecutive periods (...), so it would appear as<br
+   />HORIZONTAL ELLIPSIS 8230 ...</p
+><p
+>Add a SourceEncoding parameter to specify the file's encoding directly, rather than auto-detect it.</p
+><h1 id="development-notes"
+>Development Notes</h1
+><p
+>The Encoding utility is developed with the Python 2.5 language from<br
+   /><a href="http://python.org"
+  >http://python.org</a
+  ></p
+><p
+>The following built-in packages are used: codecs, glob, locale, os, shutil, sys, and unicodedata.</p
+><p
+>The following third-party packages are used:</p
+><p
+>chardet -- Universal encoding detector<br
+   /><a href="http://chardet.feedparser.org"
+  >http://chardet.feedparser.org</a
+  ></p
+><p
+>encutils -- Encoding detection collection for Python<br
+   /><a href="http://cthedot.de/encutils/"
+  >http://cthedot.de/encutils/</a
+  ></p
+><p
+>py2exe -- Build standalone executables for Windows<br
+   /><a href="http://py2exe.org"
+  >http://py2exe.org</a
+  ></p
+><p
+>unidecode -- Unicode transliteration in Python<br
+   /><a href="http://www.tablix.org/~avian/blog/archives/2009/01/unicode_transliteration_in_python/"
+  >http://www.tablix.org/~avian/blog/archives/2009/01/unicode_transliteration_in_python/</a
+  ></p
+><p
+>The batch file, RunSetup.bat, runs the py2exe script, setup.py, to create the stand-alone executable, Encoding.exe.</p
+><p
+>I welcome feedback, suggestions, and code contributions, which will help this project improve over time. The latest version is available at<br
+   /><a href="http://EmpowermentZone.com/Encoding.zip"
+  >http://EmpowermentZone.com/Encoding.zip</a
+  ></p
+><p
+>Jamal Mazrui<br
+   /><script type="text/javascript"
+  >
+<!--
+h='&#x65;&#x6d;&#112;&#x6f;&#x77;&#x65;&#114;&#x6d;&#x65;&#110;&#116;&#122;&#x6f;&#110;&#x65;&#46;&#x63;&#x6f;&#x6d;';a='&#64;';n='&#106;&#x61;&#x6d;&#x61;&#108;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+'jamal@EmpowermentZone.com'+'<\/'+'a'+'>');
+// -->
+</script
+  ><noscript
+  >&#106;&#x61;&#x6d;&#x61;&#108;&#64;&#x45;&#x6d;&#112;&#x6f;&#x77;&#x65;&#114;&#x6d;&#x65;&#110;&#116;&#90;&#x6f;&#110;&#x65;&#46;&#x63;&#x6f;&#x6d;&#32;&#40;&#106;&#x61;&#x6d;&#x61;&#108;&#32;&#x61;&#116;&#32;&#x65;&#x6d;&#112;&#x6f;&#x77;&#x65;&#114;&#x6d;&#x65;&#110;&#116;&#122;&#x6f;&#110;&#x65;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#x6f;&#x6d;&#x29;</noscript
+  ></p
+>
+</body>
+</html>
